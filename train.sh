@@ -29,4 +29,4 @@ net-mc $name 1
 
 #train the network and send an email wiht the error analysis when complete
 mc-spec $name sample-sigmas heatbath hybrid 1000:10 0.4
-(net-mc $name $cycles ; net-pred td $name 101:%$(( ($cycles + (200 - 1)) / 200)) | mail -s "Network $name has finished training!" alexanderkarbo@gmail.com) & 
+(net-mc $name $cycles ; net-pred td $name 101:%$(( ($cycles + (200 - 1)) / 200)) | mail -s "Network $name has finished training!" alexanderkarbo@gmail.com net-pred td $name 101:%$(( ($cycles + (200 - 1)) / 200)) &> $name.txt) & 
