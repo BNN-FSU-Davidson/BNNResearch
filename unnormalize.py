@@ -1,5 +1,16 @@
 #!/usr/bin/env python
 
+#------------------------------------------------------------------------
+#unnormalize.py, a code written by Karbo in the summer of 2017.
+#This code unnormalizes a datafile that it is given.
+#It assumes that the file is divided into columns with the first line of each
+#column containing the header. The first argument is the data to unnormalize.
+#The the second and third tell the program where to find the standard devaition
+#and mean by reading first the filename and then the integer number of the column 
+#the program should use. The pgogram assumes it is using a file generated
+#from the normalize.py program.
+#------------------------------------------------------------------------
+
 import sys
 import linecache
 import math

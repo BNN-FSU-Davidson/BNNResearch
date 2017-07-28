@@ -1,5 +1,12 @@
 #!/usr/bin/env python
 
+#------------------------------------------------------------------------
+#normalize.py, a code written by Karbo in the summer of 2017.
+#This code normalizes a datafile that it is given.
+#It assumes that the file is divided into columns with the first line of each
+#column containing the header.
+#------------------------------------------------------------------------
+
 import sys
 import linecache
 import math
