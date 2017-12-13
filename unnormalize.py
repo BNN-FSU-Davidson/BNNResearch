@@ -7,7 +7,7 @@
 #column containing the header. The first argument is the data to unnormalize.
 #The the second and third tell the program where to find the standard devaition
 #and mean by reading first the filename and then the integer number of the column 
-#the program should use. The pgogram assumes it is using a file generated
+#the program should use. The program assumes it is using a file generated
 #from the normalize.py program.
 #------------------------------------------------------------------------
 
@@ -53,6 +53,7 @@ def main():
             value[i].append(row.split()[i]) #read ith value of j into [i][j]
             value[i][j] = (float(value[i][j]) * float(std)) #multiply by std
             value[i][j] = value[i][j] + float(mean) #add mean
+	    value[i][j] = math.exp(value[i][j]) #cancel out the ln that was taken of the values before normalization
             value[i][j] = str(value[i][j]) #convert value to a str so it has a length
         
     datafile.close()

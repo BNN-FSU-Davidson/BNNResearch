@@ -14,7 +14,7 @@ import math
 def main():
     name = sys.argv[1] #read filename from the terminal
     infile = open(str(name), 'r') #open the data file
-    outfile = open('normalized_log(xsec)_'+str(name), 'w') #open a file to write normalized data
+    outfile = open('smooshed_'+str(name), 'w') #open a file to write normalized data
 
     line = infile.readline() #get a line
     cols = len(line.split()) #find number of columns in file
@@ -26,6 +26,7 @@ def main():
     print('\nFile profiled: '+str(cols)+' columns '+str(rows)+' lines\n')
     
     value = [[] for i in xrange(cols)] #list of values [column][row]
+    valuenew = [[] for i in xrange(cols)] #list of new values [column][row]
     valuesqr = [[] for i in xrange(cols)] #list of squared values [column][row]
     mean = [[] for i in xrange(cols)] #list of mean of each column [column]
     meansqr = [[] for i in xrange(cols)] #list of mean of the squared values [column]
@@ -41,7 +42,6 @@ def main():
         row = linecache.getline(str(name), j+2) #get the line j
         for i in range(cols):
             value[i].append(row.split()[i]) #read ith value of j into [i][j]
-	value[19][j] = math.log(float(value[19][j])) #Take log of x-sections before normalizing
         
     infile.close()
     print "Values read\n"
@@ -49,9 +49,8 @@ def main():
     for i in range(cols):
         mean[i] = sum(float(a) for a in value[i])/rows #calulate mean for each column
         for j in range(rows):
-            value[i][j] = float(value[i][j]) - mean[i] #subtract the mean from the value
-            valuesqr[i].append(value[i][j] * value[i][j]) #square the new value
-            value[i][j] = str(value[i][j]) #convert value back to a str so it has a length
+            valuenew[i].append(float(value[i][j]) - mean[i]) #subtract the mean from the value
+            valuesqr[i].append(valuenew[i][j] * valuenew[i][j]) #square the new value
         meansqr[i] = sum(float(a) for a in valuesqr[i])/rows #calculate mean of sqrvalues
         std[i] = math.sqrt(meansqr[i]) #take the sqrt of the mean which is the std
         col_width[i] = len(max(value[i], key=len))+3 #find the max length of each column
@@ -91,6 +90,6 @@ def main():
         outfile.write("\n")
     
     outfile.close()
-    print('Normalized data written to '+'normalized_log(xsec)_'+str(name) + '\n')
+    print('Smooshed data written to '+'smooshed_'+str(name) + '\n')
 
 main()
