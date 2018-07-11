@@ -8,15 +8,13 @@
 #https://www.cs.toronto.edu/~radford/fbm.software.html
 #
 #The code assumes that fbm is in the user's path.
-#The file takes three arguments, the name of the output file, the number
-#of points to use, and the number of cycles to use. This code requires the
-#datafile to be configured manually (so that multiple networks can be trained
-#off the same data quickly) and uses a hybrid montecarlo for a linear
+#The file takes 4 arguments, the name of the output file, the datafile, the number
+#of points to use, and the number of cycles to use. The script uses a hybrid montecarlo for a linear
 #regression problem. It also assumes that the user requires 19 inputs and
-#one target, as is the case in the pMSSM. The code also currently emails the results
-#to me, so please either delete that part or change the email address if you
-#plan to use the code :)
+#one target, as is the case in the pMSSM.
+#
 #See FBM's documentation for more info
+#
 #the next three lines have some saved values for priors:
 #19 20 1 / - 0.05:0.5 0.05:0.5 - x0.05:0.5 - 100
 #19 20 20 1 / - 0.05:1:1.5 0.2:1 - x0.3:1 - 0.2:1 -  x0.1:1:4 - - 10
@@ -49,11 +47,12 @@ do
     net-mc $name.net 1
     mc-spec $name.net sample-sigmas heatbath hybrid 1000:10 0.4
     echo "Done setting up MC"
-    #below is the training and analysis. the command first trains a network, then generates a prediction from it and writes it to a text file. The test data is then un-normalized and written to another file. The percent error is then calculated and emailed to me (please either remove this feature or change the email address if you plan to use it
+    #below is the training and analysis. the command first trains a network, then generates a prediction from it and writes it to a text file. The test data is then un-normalized and written to another file.
     net-mc $name.net $cycles
     echo "done training"
     (net-pred tdb $name.net $(( $cycles - (($cycles * 4) / 5 ) )):%$(( ($cycles + (200 - 1)) / 200)) >> $name.txt
     python ../unnormalize.py $name.txt $data 20
+    #The percent error is then calculated and emailed to me
     python ../percenterror.py un-normalized_$name.txt | mail -s "Percent error for $name after un-normalization" mikuchera@davidson.edu)
     python ../percenterror.py un-normalized_$name.txt >> un_norm_error.txt
 
