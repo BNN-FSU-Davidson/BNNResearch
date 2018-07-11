@@ -1,12 +1,6 @@
 #------------------------------------------------------------------------
-# file: train.sh
-# author: Karbo
-# date: summer 2017
-# edited: M.P. Kuchera 11 July 2018
-#
+#train.sh, a code written by Karbo in the summer of 2017.
 #This code trains BNNs with Radford Neal's FBM software.
-#https://www.cs.toronto.edu/~radford/fbm.software.html
-#
 #The code assumes that fbm is in the user's path.
 #The file takes three arguments, the name of the output file, the number
 #of points to use, and the number of cycles to use. This code requires the
@@ -25,7 +19,7 @@
 
 name=$1 #first argument is the network file name
 data=$2 # datafile path and name
-points=$3 #second argument is the number of points to use in training
+points=$3 #second argument is the number of points to une in training
 cycles=$4 #third argument is the number of cycles to run HMC algorithm
 
 counter=1
@@ -34,7 +28,7 @@ do
     let "min = $((85764 + $(($counter * 1000)) ))" #This is the variable for where the testing points start
     let "max = $(( $min + 999 ))"   #This is the variable for where the testing points end
     net-spec $name-$counter.net 19 20 20 20 1 / - 0.05:1:1.5 0.2:1 - x0.3:1 - 0.2:1 -  x0.3:1 - 0.2:1 -  x0.1:1:4 - - 10 #specify the network architecture
-    model-spec $name-$counter.net real 0.05:0.5 #specify model -- real = regression
+    model-spec $name-$counter.net real 0.05:0.5 #specify model -- real = regression 
     data-spec $name-$counter.net 19 1 / $data@5:$(($points+4)) . $data@$min:$max . #specify data
     #do some set up and then specify the training
     net-gen $name-$counter.net fix 0.5
