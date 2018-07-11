@@ -28,21 +28,31 @@ data=$2 # datafile path and name
 points=$3 #second argument is the number of points to use in training
 cycles=$4 #third argument is the number of cycles to run HMC algorithm
 
+
+echo "data file is $data"
 counter=1
-while [ $counter -le 10 ]
+while [ $counter -le 1 ] # changed from 10. Can do more for statistics -- std dev, etc
 do
-    let "min = $((85764 + $(($counter * 1000)) ))" #This is the variable for where the testing points start
-    let "max = $(( $min + 999 ))"   #This is the variable for where the testing points end
-    net-spec $name-$counter.net 19 20 20 20 1 / - 0.05:1:1.5 0.2:1 - x0.3:1 - 0.2:1 -  x0.3:1 - 0.2:1 -  x0.1:1:4 - - 10 #specify the network architecture
-    model-spec $name-$counter.net real 0.05:0.5 #specify model -- real = regression
-    data-spec $name-$counter.net 19 1 / $data@5:$(($points+4)) . $data@$min:$max . #specify data
+    echo "counter = $counter"
+    #let "min = $((85764 + $(($counter * 1000)) ))" #This is the variable for where the testing points start
+    #let "max = $(( $min + 999 ))"   #This is the variable for where the testing points end
+    let "min = 2001"
+    let "end = 3000"
+    net-spec $name.net 19 20 20 20 1 / - 0.05:1:1.5 0.2:1 - x0.3:1 - 0.2:1 -  x0.3:1 - 0.2:1 -  x0.1:1:4 - - 10 #specify the network architecture
+    model-spec $name.net real 0.05:0.5 #specify model -- real = regression
+    data-spec $name.net 19 1 / $data@5:$(($points+4)) . $data@$min:$max . #specify data
+    echo "Done setting up network"
+    net-spec $name
     #do some set up and then specify the training
-    net-gen $name-$counter.net fix 0.5
-    mc-spec $name-$counter.net repeat 10 sample-noise heatbath hybrid 100:10 0.2
-    net-mc $name-$counter.net 1
-    mc-spec $name-$counter.net sample-sigmas heatbath hybrid 1000:10 0.4
+    net-gen $name.net fix 0.5
+    mc-spec $name.net repeat 10 sample-noise heatbath hybrid 100:10 0.2
+    net-mc $name.net 1
+    mc-spec $name.net sample-sigmas heatbath hybrid 1000:10 0.4
+    echo "Done setting up MC"
     #below is the training and analysis. the command first trains a network, then generates a prediction from it and writes it to a text file. The test data is then un-normalized and written to another file. The percent error is then calculated and emailed to me (please either remove this feature or change the email address if you plan to use it
-    (net-mc $name-$counter.net $cycles && net-pred tdb $name-$counter.net $(( $cycles - (($cycles * 4) / 5 ) )):%$(( ($cycles + (200 - 1)) / 200)) >> $name-$counter.txt \
-    && python unnormalize.py $name-$counter.txt $data 20 && python percenterror.py un-normalized_$name-$counter.txt | mail -s "Percent error for $name after un-normalization" mikuchera@davidson.edu) &
+    net-mc $name.net $cycles
+    echo "done training"
+    (net-pred tdb $name.net $(( $cycles - (($cycles * 4) / 5 ) )):%$(( ($cycles + (200 - 1)) / 200)) >> $name.txt
+    python unnormalize.py $name.txt $data 20 && python percenterror.py un-normalized_$name.txt | mail -s "Percent error for $name after un-normalization" mikuchera@davidson.edu) &
     ((counter++))
 done
