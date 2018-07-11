@@ -53,6 +53,8 @@ do
     net-mc $name.net $cycles
     echo "done training"
     (net-pred tdb $name.net $(( $cycles - (($cycles * 4) / 5 ) )):%$(( ($cycles + (200 - 1)) / 200)) >> $name.txt
-    python unnormalize.py $name.txt $data 20 && python percenterror.py un-normalized_$name.txt | mail -s "Percent error for $name after un-normalization" mikuchera@davidson.edu) &
+    python ../unnormalize.py $name.txt $data 20
+    python ../percenterror.py un-normalized_$name.txt | mail -s "Percent error for $name after un-normalization" mikuchera@davidson.edu)
+
     ((counter++))
 done
