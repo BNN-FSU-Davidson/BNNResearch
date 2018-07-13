@@ -10,3 +10,5 @@ These scripts are used to train a Bayesian Neural Network (BNN) on supersymmetry
 parameter points and their experimental predictions.
 
 The BNN is trained using Radford Neal's Software for Flexible Bayesian Modeling and Markov Chain Sampling (fbm).
+
+train_MPK.sh sets up, trains, and tests a NNN
