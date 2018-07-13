@@ -34,11 +34,10 @@ do
     echo "counter = $counter"
     #let "min = $((85764 + $(($counter * 1000)) ))" #This is the variable for where the testing points start
     #let "max = $(( $min + 999 ))"   #This is the variable for where the testing points end
-    let "min = 2001"
-    let "end = 3000"
+    let "min = 3001"
     net-spec $name.net 19 20 20 20 1 / - 0.05:1:1.5 0.2:1 - x0.3:1 - 0.2:1 -  x0.3:1 - 0.2:1 -  x0.1:1:4 - - 10 #specify the network architecture
     model-spec $name.net real 0.05:0.5 #specify model -- real = regression
-    data-spec $name.net 19 1 / $data@5:$(($points+4)) . $data@$min:$max . #specify data
+    data-spec $name.net 19 1 / $data@4:$(($points+4)),21 . $data@$min:$max,21 . #specify data
     echo "Done setting up network"
     net-spec $name
     #do some set up and then specify the training

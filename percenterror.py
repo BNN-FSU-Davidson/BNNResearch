@@ -1,7 +1,11 @@
 #!/usr/bin/env python
 
 #------------------------------------------------------------------------
-#percenterror.py, a code written by Karbo in the summer of 2017.
+# percenterror.py
+# author: Karbo
+# date: Summer
+# edited: 12 July 2018
+#
 #This code calculates the percent error between two columns of values.
 #It is meant to be used with the output from an FBM "net-pred btd" command.
 #------------------------------------------------------------------------
