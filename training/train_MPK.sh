@@ -37,6 +37,7 @@ do
     let "min = 3001"
     net-spec $name.net 19 20 20 20 1 / - 0.05:1:1.5 0.2:1 - x0.3:1 - 0.2:1 -  x0.3:1 - 0.2:1 -  x0.1:1:4 - - 10 #specify the network architecture
     model-spec $name.net real 0.05:0.5 #specify model -- real = regression
+    # ,21 for target in 21st column (NLO values). 
     data-spec $name.net 19 1 / $data@5:$(($points+4)) $data@5:$(($points+4)),21 $data@$min:$max $data@$min:$max,21 #specify data
     echo "Done setting up network"
     net-spec $name
