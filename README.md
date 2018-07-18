@@ -11,4 +11,4 @@ parameter points and their experimental predictions.
 
 The BNN is trained using Radford Neal's Software for Flexible Bayesian Modeling and Markov Chain Sampling (fbm).
 
-train_MPK.sh sets up, trains, and tests a BNN with 19 inputs , 3 hidden layers, and one output.
+train_MPK.sh sets up, trains, and tests a BNN with 19 inputs, 3 hidden layers, and one output. Training data is produced using susyhit and prospino.
